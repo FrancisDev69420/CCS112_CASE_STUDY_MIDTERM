@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request)
     $projects = Project::where('user_id', $user->id)->get(); // Fetch user-specific projects
 
     return response()->json([
-        'message' => 'Welcome to your Dashboard, ' . $user->name,
+        'message' => 'Welcome' . $user->name,
         'projects' => $projects
     ]);
 });
@@ -34,8 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/projects/{id}', [ProjectController::class, 'destroy']); // Delete a project
     
     // Tasks (Related to a Specific Project)
-    Route::get('/projects/{id}/tasks', [TaskController::class, 'index']); // List tasks for a project
-    Route::post('/projects/{id}/tasks', [TaskController::class, 'store']); // Add a new task to a project
+    Route::get('/projects/{projectId}/tasks', [TaskController::class, 'index']); // List tasks for a project
+    Route::post('/projects/{projectId}/tasks', [TaskController::class, 'store']); // Add a new task to a project
     Route::get('/projects/{projectId}/tasks/{taskId}', [TaskController::class, 'show']); // Get a single task
     Route::put('/projects/{projectId}/tasks/{taskId}', [TaskController::class, 'update']); // Update a task
     Route::delete('/projects/{projectId}/tasks/{taskId}', [TaskController::class, 'destroy']); // Delete a task
