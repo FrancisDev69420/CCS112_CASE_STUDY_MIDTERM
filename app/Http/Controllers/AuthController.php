@@ -15,12 +15,14 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'role' => 'required|in:Project Manager,Team Member', // Ensure role is valid
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         return response()->json(['token' => $user->createToken('API Token')->plainTextToken], 201);
@@ -40,7 +42,11 @@ class AuthController extends Controller
         $user = Auth::user();
         $token = $user->createToken('API Token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'role' => $user->role,
+            'user_id' => $user->id, 
+        ]);
     }
 
 

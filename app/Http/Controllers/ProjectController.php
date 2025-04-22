@@ -16,10 +16,12 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         try {
+            
             $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'user_id' => 'required|exists:users,id' // Ensure the user exists
+                'user_id' => 'required|exists:users,id',// Ensure the user exists
+                'budget' => 'required|numeric|min:0', 
             ]);
 
             $project = Project::create($request->all());

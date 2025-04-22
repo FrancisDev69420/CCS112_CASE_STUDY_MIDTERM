@@ -4,8 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\Models\Project;
+
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']); // Fetch all users
 
 // Authentication Routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -18,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request)
     $projects = Project::where('user_id', $user->id)->get(); // Fetch user-specific projects
 
     return response()->json([
-        'message' => 'Welcome' . $user->name,
+        'message' => 'Welcome ' . $user->name,
         'projects' => $projects
     ]);
 });
